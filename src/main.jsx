@@ -48,10 +48,37 @@ function PortfolioDetail({ project, onBack }) {
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [formError, setFormError] = useState('');
   const [selectedProject, setSelectedProject] = useState(projectFromLocation);
   const [form, setForm] = useState({ name: '', email: '', brief: '' });
   const updateForm = (event) => setForm({ ...form, [event.target.name]: event.target.value });
-  const submitForm = (event) => { event.preventDefault(); setSent(true); };
+  const submitForm = async (event) => {
+    event.preventDefault();
+    setSending(true);
+    setFormError('');
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/krunaldholakia1@gmail.com', {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.brief,
+          _subject: 'New portfolio inquiry',
+          _template: 'table',
+          _captcha: 'false',
+        }),
+      });
+      if (!response.ok) throw new Error('The message could not be sent.');
+      setSent(true);
+      setForm({ name: '', email: '', brief: '' });
+    } catch (error) {
+      setFormError(error.message);
+    } finally {
+      setSending(false);
+    }
+  };
   const closeMenu = () => setMenuOpen(false);
   useEffect(() => {
     const handleHistoryChange = () => setSelectedProject(projectFromLocation());
