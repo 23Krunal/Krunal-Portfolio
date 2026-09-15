@@ -30,7 +30,7 @@ button { color: inherit; font: inherit; cursor: pointer; }
 .portrait-label { right: 18px; bottom: 18px; left: 18px; z-index: 2; padding: 8px 50px; border: 1px solid rgba(255,255,255,.18); border-radius: 6px; background: rgba(12,17,14,.72); color: rgba(255,255,255,.9); }
 .portrait-label { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 9px; }
 .availability { right: 18px; bottom: -4px; left: auto; z-index: 3; padding: 11px 13px; box-shadow: 0 12px 28px rgba(0,0,0,.28); }
-.work { padding: 75px 0 120px; }
+.work { padding : 75px 0 120px; }
 .work { padding-top: 55px; }
 @media (max-width: 760px) { .hero { min-height: auto; padding: 135px 0 80px; } .hero-art { width: 90%; margin: auto; } .work { padding: 75px 0 100px; } }
 .hero { min-height: 570px; padding-top: 108px; padding-bottom: 32px; }

@@ -4,6 +4,8 @@ import { ArrowDownRight, ArrowLeft, ArrowUpRight, Box, FileText, Layers3, Mail, 
 import portraitImage from '../3d7c8182-ab01-4f3f-b55a-fc7c4fdb3ce9.png';
 import './index.css';
 
+const baseUrl = import.meta.env.BASE_URL;
+
 const projects = [
   { id: '01', title: 'The Last Outpost', category: 'Environment art', description: 'A lonely research station built around scale, atmosphere, and environmental storytelling.', tags: ['Worldbuilding', 'Lighting'], accent: 'green', className: 'feature-project' },
   { id: '02', title: 'Warden', category: '3D character art', description: 'A stylized guardian study exploring silhouette, layered materials, and readable identity.', tags: ['Sculpting', 'Materials'], accent: 'gold' },
@@ -11,11 +13,11 @@ const projects = [
 ];
 
 const portfolioMedia = [
-  { slug: 'living-room', title: 'Living Room', type: 'video', src: '/portfolio/living-room.mp4', goal: 'Environment building', intro: 'A first environment-building exercise where I turned a simple room into a complete lived-in space through furniture, lighting, and atmosphere.', tools: 'Blender', summary: 'A complete living room environment created as a student learning project. I modeled the furniture and interior details, including a couch, lights, lamps, table, chairs, and stool, then used HDRI lighting to study atmosphere and presentation.', role: 'Environment modeling, set dressing, and lighting' },
-  { slug: 'headphones', title: 'Headphones', type: 'video', src: '/portfolio/headphones.mp4', goal: 'Product video study', intro: 'A product-animation exercise focused on giving a pair of Microsoft headphones a clean reveal through controlled camera movement and studio-style lighting.', tools: 'Blender', summary: 'A product animation study focused on presenting Microsoft headphones with a clean, polished feel. I explored smooth camera transitions and lighting setups to reveal the product clearly throughout the sequence.', role: 'Product modeling presentation, camera animation, and lighting' },
-  { slug: 'airpods', title: 'Airpods', type: 'video', src: '/portfolio/airpods.mp4', goal: 'Product video study', intro: 'A personal attempt at recreating the rhythm of a real product advertisement, using smooth transitions and lighting to make the AirPods feel refined and tangible.', tools: 'Blender', summary: 'A student product-video exercise inspired by real advertising language. I created a smooth camera transition and lighting setup for Apple AirPods, aiming for a clean presentation that makes the product feel tangible and premium.', role: 'Product presentation, camera animation, and lighting' },
-  { slug: 'product-photo', title: 'Product Photo', type: 'image', src: '/portfolio/product-photo.png', goal: 'Product render study', intro: 'A focused still-life render created to practice how composition, materials, and light can turn a simple perfume product into a clear visual subject.', tools: 'Blender', summary: 'A focused still-render exercise for a perfume product. The project helped me practice framing, material response, lighting, and the small decisions that make a simple product image feel intentional.', role: 'Product staging, materials, composition, and rendering' },
-  { slug: 'chess', title: 'Chess', type: 'video', src: '/portfolio/chess.mp4', goal: 'Animation study', intro: 'A small animation exercise built around chess pieces, helping me explore timing, movement, framing, and how simple actions can create visual interest.', tools: 'Blender', summary: 'A simple animation study using chess pieces. I used the scene to practice object movement, timing, camera framing, and the relationship between a small action and a readable visual composition.', role: 'Animation, scene setup, and camera composition' },
+  { slug: 'living-room', title: 'Living Room', type: 'video', src: `${baseUrl}portfolio/living-room.mp4`, goal: 'Environment building', intro: 'A first environment-building exercise where I turned a simple room into a complete lived-in space through furniture, lighting, and atmosphere.', tools: 'Blender', summary: 'A complete living room environment created as a student learning project. I modeled the furniture and interior details, including a couch, lights, lamps, table, chairs, and stool, then used HDRI lighting to study atmosphere and presentation.', role: 'Environment modeling, set dressing, and lighting' },
+  { slug: 'headphones', title: 'Headphones', type: 'video', src: `${baseUrl}portfolio/headphones.mp4`, goal: 'Product video study', intro: 'A product-animation exercise focused on giving a pair of Microsoft headphones a clean reveal through controlled camera movement and studio-style lighting.', tools: 'Blender', summary: 'A product animation study focused on presenting Microsoft headphones with a clean, polished feel. I explored smooth camera transitions and lighting setups to reveal the product clearly throughout the sequence.', role: 'Product modeling presentation, camera animation, and lighting' },
+  { slug: 'airpods', title: 'Airpods', type: 'video', src: `${baseUrl}portfolio/airpods.mp4`, goal: 'Product video study', intro: 'A personal attempt at recreating the rhythm of a real product advertisement, using smooth transitions and lighting to make the AirPods feel refined and tangible.', tools: 'Blender', summary: 'A student product-video exercise inspired by real advertising language. I created a smooth camera transition and lighting setup for Apple AirPods, aiming for a clean presentation that makes the product feel tangible and premium.', role: 'Product presentation, camera animation, and lighting' },
+  { slug: 'product-photo', title: 'Product Photo', type: 'image', src: `${baseUrl}portfolio/product-photo.png`, goal: 'Product render study', intro: 'A focused still-life render created to practice how composition, materials, and light can turn a simple perfume product into a clear visual subject.', tools: 'Blender', summary: 'A focused still-render exercise for a perfume product. The project helped me practice framing, material response, lighting, and the small decisions that make a simple product image feel intentional.', role: 'Product staging, materials, composition, and rendering' },
+  { slug: 'chess', title: 'Chess', type: 'video', src: `${baseUrl}portfolio/chess.mp4`, goal: 'Animation study', intro: 'A small animation exercise built around chess pieces, helping me explore timing, movement, framing, and how simple actions can create visual interest.', tools: 'Blender', summary: 'A simple animation study using chess pieces. I used the scene to practice object movement, timing, camera framing, and the relationship between a small action and a readable visual composition.', role: 'Animation, scene setup, and camera composition' },
 ];
 
 function ProfilePortrait() {
@@ -32,7 +34,10 @@ function ProjectVisual({ project }) {
 }
 
 function projectFromLocation() {
-  const match = window.location.pathname.match(/^\/project\/([^/]+)\/?$/);
+  const appPath = window.location.pathname.startsWith(baseUrl)
+    ? window.location.pathname.slice(baseUrl.length - 1)
+    : window.location.pathname;
+  const match = appPath.match(/^\/project\/([^/]+)\/?$/);
   return portfolioMedia.find((project) => project.slug === match?.[1]) || null;
 }
 
@@ -53,8 +58,8 @@ function App() {
     window.addEventListener('popstate', handleHistoryChange);
     return () => window.removeEventListener('popstate', handleHistoryChange);
   }, []);
-  const openProject = (project) => { window.location.assign(`/project/${project.slug}`); };
-  const closeProject = () => { window.location.assign('/'); };
+  const openProject = (project) => { window.location.assign(`${baseUrl}project/${project.slug}`); };
+  const closeProject = () => { window.location.assign(baseUrl); };
 
   if (selectedProject) return <div className="site-shell"><PortfolioDetail project={selectedProject} onBack={closeProject} /></div>;
 
