@@ -62,9 +62,10 @@ function App() {
         method: 'POST',
         headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          message: form.brief,
+          Name: form.name,
+          'Project brief': form.brief,
+          'Email address': form.email,
+          _replyto: form.email,
           _subject: 'New portfolio inquiry',
           _template: 'table',
           _captcha: 'false',
